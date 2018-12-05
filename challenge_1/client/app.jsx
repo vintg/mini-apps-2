@@ -20,6 +20,8 @@ export class App extends Component {
 
     this.handlePageClick = this.handlePageClick.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
+    this.editEvent = this.editEvent.bind(this);
+    this.saveEvent = this.saveEvent.bind(this);
   }
 
   loadEventsFromServer() {
@@ -67,11 +69,31 @@ export class App extends Component {
     });
   }
 
+  editEvent(e){
+    $(e).attr('contenteditable','true');
+    $(e).addClass('editing');
+  }
+
+  saveEvent(e){
+    axios.post('/events', {
+      id: $(e).attr('id'),
+      date: $(e).find('.event-date').text(),
+      desc: $(e).find('.event-desc').text()
+    }).then((res)=> console.log(res))
+    .catch((err)=> console.log(err));
+
+    $(e).attr('contenteditable', 'false');
+    $(e).removeClass('editing');
+  }
+
   render() {
     return (
       <div className="wrapper">
         <Search updateQuery={this.updateQuery}/>
-        <EventList data={this.state.data.slice(0, this.state.perPage)} />
+        <EventList
+          data={this.state.data.slice(0, this.state.perPage)}
+          editEvent={this.editEvent}
+          saveEvent={this.saveEvent}/>
         <div id="react-paginate">
         <ReactPaginate previousLabel={"prev"}
                        nextLabel={"next"}

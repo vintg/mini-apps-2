@@ -14,7 +14,7 @@ app.set('PORT', process.env.PORT || 3000);
 const Events = require('../data/Events');
 
 app.get('/events', (req, res) => {
-  console.log('params received', req.query);
+  console.log('GET', req.query);
   const search = (req.query.query)? {'description':{'$regex': req.query.query}} : {};
 
   Events.find(search)
@@ -22,6 +22,15 @@ app.get('/events', (req, res) => {
     .skip(parseInt(req.query.offset))
     .exec()
     .then(data=>res.status(200).send(data))
+    .catch(err=>res.status(404).send(err));
+});
+
+app.post('/events', (req, res) => {
+  Events.updateOne({_id:req.body.id}, {
+      date: req.body.date,
+      description: req.body.desc
+    })
+    .then(data=>res.status(200).send('save success'))
     .catch(err=>res.status(404).send(err));
 });
 
