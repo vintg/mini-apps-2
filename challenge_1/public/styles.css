@@ -10,6 +10,14 @@ li{
   display:inline-block;
 }
 
+#react-paginate {
+  height: 2em;
+  margin:2em;
+  top:30%;
+  position: sticky;
+  width:100%;
+}
+
 #react-paginate ul {
     display: inline-block;
     padding-left: 15px;
@@ -21,32 +29,51 @@ li{
 }
 
 .wrapper{
-  display: flex;
   padding:3em;
+  width:100%;
 }
 
 .eventList{
+  margin-top:5em;
   width: 100%;
 }
 
 .event-date{
   font-weight: bold;
+  margin-right:3em;
 }
 
 .event-desc{
   margin-left:2em;
-  width:50%;
+  width:80%;
+}
+
+.event-edit, .event-save{
+  width:2em;
+  height:1em;
+  padding: 3px;
+  background:transparent;
+  border:none;
+  color:blue;
+}
+
+.event-edit:hover{
+  text-decoration: underline;
+}
+
+.event-save:hover{
+  text-decoration: underline;
 }
 
 .search-container{
   height: 2em;
   margin:2em;
-  top:20%;
-  position: sticky;
+  top:1em;
+
 }
 
 .search-bar{
-  width: 100% !important;
+  width: 6em;
 }
 
 .search-form{
