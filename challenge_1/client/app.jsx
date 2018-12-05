@@ -26,11 +26,12 @@ export class App extends Component {
     const offset = this.state.offset;
     const query = this.state.query;
 
-    axios.get(`http://localhost:3000/events?_page=${offset}&_limit=${limit}&_q=${query}`)
+    axios.get(`http://localhost:3000/events?_page=${offset}&_limit=${limit}&_description=${query}`)
     .then((res)=> {
+      console.log(res.data);
       this.setState({
         data: res.data,
-        pageCount: this.state.pageCount+1
+        pageCount: this.state.pageCount
       });
     }).catch((err)=> console.log(err));
   }
@@ -46,9 +47,8 @@ export class App extends Component {
   }
 
   handlePageClick (data) {
-    const selected = parseInt(data.selected+1);
-    const offset = Math.ceil(selected * this.state.perPage);
-    console.log('pg click', selected, offset);
+    const selected = parseInt(data.selected);
+    const offset = Math.floor(selected * this.state.perPage);
 
     this.setState({offset: offset}, () => {
       this.loadEventsFromServer();
