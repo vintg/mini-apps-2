@@ -1,0 +1,66 @@
+body{
+  font:lato 1em;
+}
+
+ul {
+   list-style-type: none;
+}
+
+li{
+  display:inline-block;
+}
+
+#react-paginate ul {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#react-paginate li {
+    display: inline-block;
+}
+
+.wrapper{
+  display: flex;
+  padding:3em;
+}
+
+.eventList{
+  width: 100%;
+}
+
+.event-date{
+  font-weight: bold;
+}
+
+.event-desc{
+  margin-left:2em;
+  width:50%;
+}
+
+.search-container{
+  height: 2em;
+  margin:2em;
+  top:20%;
+  position: sticky;
+}
+
+.search-bar{
+  width: 100% !important;
+}
+
+.search-form{
+  height:2em;
+  font-size:2em;
+  padding:1em;
+  border-radius: 1em;
+  border: 2px solid #888;
+}
+
+input:focus, select:focus, textarea:focus, button:focus {
+  outline: none;
+}
+
+.search-submit{
+  display: none;
+}
