@@ -15,6 +15,7 @@ export class App extends Component {
       perPage: 10,
       pageCount: 10,
       query: '',
+      currentPage: 1
     };
 
     this.handlePageClick = this.handlePageClick.bind(this);
@@ -22,16 +23,16 @@ export class App extends Component {
   }
 
   loadEventsFromServer() {
-    const limit = this.state.perPage;
-    const offset = this.state.offset;
-    const query = this.state.query;
-
-    axios.get(`http://localhost:3000/events?_page=${offset}&_limit=${limit}&_description=${query}`)
-    .then((res)=> {
-      console.log(res.data);
+    axios.get('/events', {
+      params: {
+        query: this.state.query,
+        offset: this.state.offset,
+        limit: this.state.perPage*(this.state.pageCount)
+      }
+    }).then((res)=> {
       this.setState({
         data: res.data,
-        pageCount: this.state.pageCount
+        pageCount: Math.floor(res.data.length/this.state.perPage)
       });
     }).catch((err)=> console.log(err));
   }
@@ -41,16 +42,27 @@ export class App extends Component {
   }
 
   updateQuery(q){
-    this.setState({ query: q}, () => {
+    this.setState({
+      query: q,
+      data: [],
+      offset:0,
+      pageCount:10
+    }, () => {
       this.loadEventsFromServer();
     });
   }
 
-  handlePageClick (data) {
-    const selected = parseInt(data.selected);
-    const offset = Math.floor(selected * this.state.perPage);
+  handlePageClick (pg) {
+    const selected = parseInt(pg.selected);
+    const offset = Math.ceil(selected * this.state.perPage);
 
-    this.setState({offset: offset}, () => {
+    if(this.state.pageCount<=selected+5)
+      this.setState({pageCount: this.state.pageCount+10});
+
+    this.setState({
+      offset: offset,
+      currentPage: selected,
+    }, () => {
       this.loadEventsFromServer();
     });
   }
@@ -59,7 +71,7 @@ export class App extends Component {
     return (
       <div className="wrapper">
         <Search updateQuery={this.updateQuery}/>
-        <EventList data={this.state.data} />
+        <EventList data={this.state.data.slice(0, this.state.perPage)} />
         <div id="react-paginate">
         <ReactPaginate previousLabel={"prev"}
                        nextLabel={"next"}
@@ -67,7 +79,7 @@ export class App extends Component {
                        breakClassName={"break-me"}
                        pageCount={this.state.pageCount}
                        marginPagesDisplayed={2}
-                       pageRangeDisplayed={5}
+                       pageRangeDisplayed={3}
                        onPageChange={this.handlePageClick}
                        containerClassName={"pagination"}
                        subContainerClassName={"pages pagination"}
