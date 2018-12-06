@@ -19,7 +19,6 @@ This API currently only supports 'BPI' index available through
 Coindesk's free API
 */
 
-
 app.get('/api', (req, res) => {
   console.log('GET', req.query);
   const index = req.query.sym;

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Search from './components/search';
-import Chart from './components/chart';
+import Charts from './components/chart';
+import Current from './components/current';
 
 export class App extends Component {
   constructor() {
     super();
     this.state = {
-      data: [],
+      data: {},
       symbol:'BPI',
       currency: 'USD',
       start: '',
@@ -25,7 +26,10 @@ export class App extends Component {
         rt: true
       }
     }).then((res)=> {
-      this.setState({currentprice: res.data});
+      this.setState({
+        currentprice: res.data.bpi.USD.rate_float,
+        lastupdated: res.data.time.updated
+      });
       console.log('realtime data:',res.data);
     }).catch((err)=> console.log(err));
   }
@@ -41,10 +45,34 @@ export class App extends Component {
       }
     }).then((res)=> {
       this.setState({
-        data: res.data
+        data: this.preprocess(res.data)
       });
       console.log('historical data:\n',res.data);
     }).catch((err)=> console.log(err));
+  }
+
+  preprocess(data) {
+    return {
+      labels: Object.keys(data.bpi),
+      datasets: [{
+            backgroundColor: "rgba(66,134,244,0.3)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+        data: Object.values(data.bpi)
+      }]
+    };
   }
 
   componentDidMount() {
@@ -60,7 +88,7 @@ export class App extends Component {
       this.getHistoricalData();
     });
 
-    setInterval(this.getRealTimeData(), 1000);
+    setInterval(this.getRealTimeData(), 60000);
   }
 
   updateSymbol(e){
@@ -71,8 +99,11 @@ export class App extends Component {
   render() {
     return (
       <div className="wrapper">
-         <Search handleTickerChange={this.updateSymbol} />
-         <Chart data={this.state.data} />
+        <div className = "nav">
+          <Search handleTickerChange={this.updateSymbol} />
+          <Current price={this.state.currentprice} lastupdated={this.state.lastupdated}/>
+        </div>
+        <Charts data={this.state.data} ticker={this.state.symbol}/>
       </div>
     );
   }

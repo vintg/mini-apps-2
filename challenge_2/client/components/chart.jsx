@@ -1,21 +1,68 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
 
-// var data = createRandomData(80,[0,1000],0.01)
-// // [{date:new Date('2013-01-01'),n:120,n3:200,ci_up:127,ci_down:115},...]
+class Charts extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      chartOptions:  {
+        steppedLine: 'before',
+        responsive: true,
+        title: {
+            display: true,
+            position: "top",
+            text: `${this.props.ticker} Index`,
+            fontSize: 18,
+            fontColor: "#111"
+        },
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }]
+        },
+        elements: {
+          line: {
+              tension: 0
+          }
+        },
+        tooltips: {
+              enabled: true,
+              mode: 'single',
+              callbacks: {
+                  label: function(tooltipItems, data) {
+                     return [tooltipItems.yLabel]
+                  }
+              }
+        },
+        legend: {
+            display: false,
+            position: "bottom",
+            labels: {
+                fontColor: "#333",
+                fontSize: 16
+            }
+        },
+      }
+    };
+  }
 
-// var chart = d3_timeseries()
-//   .addSerie(data.slice(0,60),{x:'date',y:'n'},{interpolate:'linear',color:"#a6cee3",label:"value"})
-//   .addSerie(data.slice(50),
-//           {x:'date',y:'n3',ci_up:'ci_up',ci_down:'ci_down'},
-//           {interpolate:'monotone',dashed:true,color:"#a6cee3",label:"prediction"})
-//   .width(820)
+  render(){
+    return (
+      <div className="chart-container">
+        <Line
+          data = {this.props.data}
+          options = {this.state.chartOptions}
+          height={500}
+          width={700}
+        />
+      </div>
+    );
+  }
+}
 
-// chart('.chart-container');
+export default Charts;
 
-var Chart = ({data}) => (
-  <div className="chart-container">
-    chart holder
-  </div>
-);
-
-export default Chart;
