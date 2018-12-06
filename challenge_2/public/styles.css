@@ -1,0 +1,22 @@
+.wrapper{
+  margin:3em;
+  padding:0;
+  height:100%;
+  width:100%;
+}
+
+.search-container{
+  width:100%;
+}
+
+.search-input{
+  font:3em;
+  width: 50%;
+}
+
+.chart-container{
+  margin-top:3em;
+  width:100%;
+  min-height:777px;
+  border:solid 3px blue;
+}
