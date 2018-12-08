@@ -5,7 +5,7 @@ import axios from 'axios';
 import EventList from './components/eventlist';
 import Search from './components/search';
 
-export class App extends Component {
+export default class App extends Component {
   constructor() {
     super();
 

@@ -4,9 +4,9 @@ import axios from 'axios';
 import Pins from  './components/pins';
 import InfoBoard from './components/infoboard';
 
-export default class App extends Component {
-  constructor(props){
-    super(props);
+export class App extends Component {
+  constructor(){
+    super();
 
     this.state = {
       playerCt: 0,
@@ -14,7 +14,7 @@ export default class App extends Component {
       currentPlayer: 0,
       currentGame: 0,
       GameCt: 0,
-      pinsRemaining: 10,
+      pinsRemaining: [1,2,3,4,5,6,7,8,9,10],
       turn: 1,
       frame: 1,
       frameScore: undefined,
@@ -24,14 +24,26 @@ export default class App extends Component {
     this.updateScore = this.updateScore.bind(this);
   }
 
-  updateScore(e){
-    let bowl = $(e).target.value();
+  updateScore(){
+    let bowl = e.currentTarget.value;
     let playername = this.playerNames[this.currentPlayer];
     let turn = this.state.turn;
     let turnsAllowed = 2;
     let updatedBoard = this.state.scoreBoard;
+    let pinsR = this.state.pinsRemaining;
 
-    if (bowl===10){
+    for (let i=1;i<=bowl;i++){
+      pinsR.splice(pinsR.indexOf(i),1);
+    }
+
+    console.log('bowl',bowl);
+    console.log('playername',playername);
+    console.log('turn',turn);
+    console.log('updatedboard', updatedBoard);
+    console.log('pins', pinsR);
+
+/*
+    if (this.state.pinsRemaining.length===0){
       if (this.state.frame===10 && turn===2) turnsAllowed = 3;
       else turnsAllowed = 1;
     }
@@ -40,21 +52,21 @@ export default class App extends Component {
 
     this.setState({
       scoreBoard: updatedBoard,
-      pinsRemaining: this.state.pinsRemaining - bowl,
+      pinsRemaining: pinsR,
       turn: this.state.turn++
     });
 
     if(turn === turnsAllowed) {
       this.setState({
         currentPlayer: ++this.state.currentPlayer%this.state.playerCt,
-        this.state.turn: 1
+        turn: 1
       });
     }
 
     if(this.state.currentPlayer === this.state.playerCt-1){
       if(this.state.frame<10){
         this.setState({
-          frame: this.state.frame++;
+          frame: this.state.frame++
         });
       } else {
         if(this.state.gameCt>0){
@@ -66,6 +78,8 @@ export default class App extends Component {
         }
       }
     }
+
+    */
   }
 
   componentDidMount(){
@@ -95,7 +109,7 @@ export default class App extends Component {
     this.setState({
       playerCt: playerCt,
       playerNames: players,
-      gameCt: gameCt
+      gameCt: gameCt,
       scoreBoard: scoreboard
     });
 
@@ -110,9 +124,12 @@ export default class App extends Component {
   }
 
   render(){
-    <InfoBoard board={this.state.scoreBoard} />
-    <Pins pins={this.state.pinsRemaining} handleClick={this.updateScore}/>
-
+    return (
+      <div className = 'wrapper'>
+        <InfoBoard board={this.state.scoreBoard} />
+        <Pins pins={this.state.pinsRemaining} handleClick={this.updateScore} />
+      </div>
+    );
   }
 
 };

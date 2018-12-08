@@ -12,4 +12,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use(cors());
 app.set('PORT', process.env.PORT || 3000);
 
+const server = app.listen(app.get('PORT'), () => {
+  console.log(`Node server running on`, server.address());
+});
 
