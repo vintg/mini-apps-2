@@ -6,7 +6,7 @@ const Pins =({pins, handleClick})=> (
       <button key={idx}
         className='pin-button'
         value={pin}
-        onClick={handleClick}>
+        onClick={e=>handleClick(e)}>
         {pin}
       </button>
     )}

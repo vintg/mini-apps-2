@@ -10,7 +10,7 @@ export class App extends Component {
 
     this.state = {
       playerCt: 0,
-      playerNames: [],
+      playerNames: ['Player 1'],
       currentPlayer: 0,
       currentGame: 0,
       GameCt: 0,
@@ -24,9 +24,9 @@ export class App extends Component {
     this.updateScore = this.updateScore.bind(this);
   }
 
-  updateScore(){
+  updateScore(e){
     let bowl = e.currentTarget.value;
-    let playername = this.playerNames[this.currentPlayer];
+    let playername = this.state.playerNames[this.state.currentPlayer];
     let turn = this.state.turn;
     let turnsAllowed = 2;
     let updatedBoard = this.state.scoreBoard;
