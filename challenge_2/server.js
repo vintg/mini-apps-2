@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(compression());
 app.use(express.static(`${__dirname}/public`));
 app.use(cors());
-app.set('PORT', process.env.PORT || 800);
+app.set('PORT', process.env.PORT || 3000);
 
 /*
 This API currently only supports 'BPI' index available through
